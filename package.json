@@ -10,8 +10,21 @@
   "scripts": {
     "start": "node ./src/server.js",
     "pretest": "eslint ./src --fix",
-    "test": "echo \"Tests Complete\" && exit 1"
+    "test": "echo \"Tests Complete\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edwardOpich3/smash_bros_api.git"
   },
   "author": "Edward Opich",
-  "license": "ISC"
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/edwardOpich3/smash_bros_api/issues"
+  },
+  "homepage": "https://github.com/edwardOpich3/smash_bros_api#readme",
+  "devDependencies": {
+    "eslint": "^5.5.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-import": "^2.14.0"
+  }
 }

@@ -1,0 +1,39 @@
+html, body
+{
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #222222;
+}
+
+#header
+{
+  text-align: left;
+  color: #FFFFFF;
+  margin: 0 auto;
+}
+
+#charSelect
+{
+  color: #FFFF00;
+  text-align: center;
+  width: 80%;
+  font-size: 2em;
+  margin: 0 auto;
+}
+
+#charContainer
+{
+  background-color: #BB0000;
+}
+
+#content
+{
+  margin-top: 100px;
+  width: 75%;
+  font-size: 2em;
+  text-align: center;
+  background-color: #444444;
+  margin: 0 auto;
+}
