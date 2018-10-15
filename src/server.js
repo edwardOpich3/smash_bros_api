@@ -3,17 +3,24 @@ const url = require('url');
 const query = require('querystring');
 const htmlHandler = require('./htmlResponses.js');
 const jsonHandler = require('./jsonResponses.js');
+const mediaHandler = require('./mediaResponses.js');
 
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
 // Struct holding all valid URLs that can be served
 const urlStruct = {
+  // Exact URL
   '/': htmlHandler.getIndex,
   '/style.css': htmlHandler.getCSS,
   '/getCharacter': jsonHandler.getCharacter,
-  notFound: htmlHandler.notFound,
+  '/getImage': mediaHandler.getImage,
+  '/postComment': jsonHandler.postComment,
+
+  // Error handling / Special cases
+  notFound: htmlHandler.getNotFound,
 };
 
+// Request handler for the server
 const onRequest = (request, response) => {
   const parsedUrl = url.parse(request.url);
   const params = query.parse(parsedUrl.query);

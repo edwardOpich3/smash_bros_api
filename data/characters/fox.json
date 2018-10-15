@@ -1,7 +1,8 @@
 {
+    "id": "fox",
     "name": "Fox",
     "universe": "Star Fox",
-    "imageDir": "./images/",
+    "image": "./getImage?char=fox",
     "tier": "A",
     "rank": "4",
     "desc": "Following his dead father's footsteps as the young leader of the Star Fox Team, Fox McCloud's piloting of the super-high-performance combat ship ARWING for the Lylatian System is still fresh in our memories. His one weakness may be his difficulty earning the trust of his teammates."

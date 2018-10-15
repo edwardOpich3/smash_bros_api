@@ -6,90 +6,44 @@
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
   <script type="text/babel">
-    /*const handleResponse = (xhr) => {
-      // do stuff with the xhr response
-      const response = xhr.responseText;
-      const contentType = xhr.getResponseHeader("Content-Type");
-      const contentDiv = document.querySelector("#content");
-      contentDiv.innerHTML = "";
-
-      const b = document.createElement("b");
-      const p = document.createElement("p");
-
-      // Parse XML
-      if(contentType === "text/xml"){
-        const parser = new DOMParser();
-        const parsedResponse = parser.parseFromString(response, "text/xml");
-
-        if(parsedResponse.querySelector("id")){
-          b.innerHTML = parsedResponse.querySelector("id").innerHTML;
-        }
-
-        else{
-          b.innerHTML = "success";
-        }
-
-        p.innerHTML = "Message: " + parsedResponse.querySelector("message").innerHTML;
-      }
-
-      // Parse JSON
-      else if(contentType === "application/json"){
-        const parsedResponse = JSON.parse(response);
-
-        if(parsedResponse.id){
-          b.innerHTML = parsedResponse.id;
-        }
-
-        else{
-          b.innerHTML = "success";
-        }
-
-        p.innerHTML = "Message: " + parsedResponse.message;
-      }
-
-      contentDiv.appendChild(b);
-      contentDiv.appendChild(p);
-    };
-
-    const ajaxRequest = (e) => {
-      const page = document.querySelector("#page");
-      const type = document.querySelector("#type");
-
-      const xhr = new XMLHttpRequest();
-
-      xhr.onload = () => handleResponse(xhr);
-
-      xhr.open("GET", page.value);
-      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-      xhr.setRequestHeader("Accept", type.value);
-
-      xhr.send();
-
-      e.preventDefault();
-      return false;
-    };
-
-    const init = () => {
-      const send = document.querySelector("#send");
-      send.addEventListener("click", ajaxRequest);
-    };
-
-    window.onload = init;*/
-
-    // TODO: Write functions to send API requests and to handle responses!
+    // Response handler for getCharRequest. Should display the character's info in the content section.
     const handleResponse = (xhr) => {
+      // This method should only bother with JSON. If it's anything else, ignore it.
+      if(xhr.getResponseHeader("Content-Type") != "application/json"){
+        return;
+      }
+
       const responseJSON = JSON.parse(xhr.response);
       const content = document.querySelector("#content");
 
+      // Clear out the content section
       content.innerHTML = "";
 
+      // This is where the fun begins.
+      // Let's parse our response JSON object into like a million tags
       const h3 = document.createElement("h3");
+      let p = document.createElement("p");
+
+      // Did we get an error?
+      if(responseJSON.error != null){
+        h3.innerHTML = responseJSON.error;
+        content.appendChild(h3);
+
+        p.innerHTML = responseJSON.message;
+        content.appendChild(p);
+
+        return;
+      }
+
       h3.innerHTML = responseJSON.name;
       content.appendChild(h3);
 
-      let p = document.createElement("p");
       p.innerHTML = responseJSON.universe;
       content.appendChild(p);
+
+      const img = document.createElement("img");
+      img.setAttribute("src", responseJSON.image);
+      content.appendChild(img);
 
       p = document.createElement("p");
       p.innerHTML = "<b>" + responseJSON.tier + "</b>";
@@ -102,14 +56,53 @@
       p = document.createElement("p");
       p.innerHTML = responseJSON.desc;
       content.appendChild(p);
+
+      // Comments on the character go here!
+      p = document.createElement("p");
+      p.innerHTML = "<b>Comments:</b>";
+      content.appendChild(p);
+
+      // Parse the comments!
+      let noComments = true;
+      for(var i in responseJSON.comments){
+        if(responseJSON.comments.hasOwnProperty(i)){
+          noComments = false;
+          p = document.createElement("p");
+          p.innerHTML = "<b>" + i + ":</b> " + responseJSON.comments[i];
+          content.appendChild(p);
+        }
+      };
+
+      // If there aren't any comments on the current character yet, display a message.
+      if(noComments){
+        p = document.createElement("p");
+        p.innerHTML = "Nothing's been posted yet!";
+        content.appendChild(p);
+      }
+
+      p = document.createElement("p");
+      p.innerHTML = "Post your thoughts on " + responseJSON.name + "!";
+      content.appendChild(p);
+
+      // Leave a form to submit a comment under this current particular character!
+      const form = document.createElement("form");
+      form.setAttribute("id", "imgUploadForm");
+      form.setAttribute("action", "/postComment?char=" + responseJSON.id);
+      form.addEventListener("submit", postComment);
+      form.innerHTML = "<input name=\"username\" type=\"text\" placeholder=\"Username\"><br>" + 
+                       "<textarea name=\"comment\" cols=\"50\" rows=\"5\" placeholder=\"Enter your comment...\"></textarea><br>" +
+                       "<input type=\"submit\" value=\"Post Comment\">";
+      content.appendChild(form);
     };
 
-    const ajaxRequest = (e) => {
+    // Make a request for a particular character's info.
+    const getCharRequest = (e) => {
       const xhr = new XMLHttpRequest();
+      const method = document.querySelector("#method").value;
 
       xhr.onload = () => handleResponse(xhr);
 
-      xhr.open("GET", e.target.getAttribute("value"));
+      xhr.open(method, e.target.getAttribute("value"));
       xhr.setRequestHeader("Accept", "application/json");
 
       xhr.send();
@@ -118,10 +111,34 @@
       return false;
     };
 
+    // Make a post request for a comment on a particular character.
+    const postComment = (e) => {
+      const xhr = new XMLHttpRequest();
+      const form = e.target;
+      const username = form.querySelector("input[name=\"username\"]");
+      const comment = form.querySelector("textarea[name=\"comment\"]");
+
+      // The JSON to be sent to the server
+      const messageJSON = {
+        username: username.value,
+        comment: comment.value
+      };
+
+      xhr.open("POST", form.action);
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.setRequestHeader("Accept", "application/json");
+
+      xhr.send(JSON.stringify(messageJSON));
+
+      e.preventDefault();
+      return false;
+    }
+
+    // Initialize the character links
     const init = () => {
         const characters = document.querySelector("#charContainer").querySelectorAll("a");
         for(let i = 0; i < characters.length; i++){
-          characters[i].addEventListener("click", ajaxRequest);
+          characters[i].addEventListener("click", getCharRequest);
         }
     };
 
@@ -129,46 +146,31 @@
   </script>
 </head>
 <body>
-  <!--<section id="top">
-    <h3>Status Code Tests</h3>
-    <select id="page">
-      <option value="/success">Success</option>
-      <option value="/badRequest">Bad Request</option>
-      <option value="/unauthorized">Unauthorized</option>
-      <option value="/forbidden">Forbidden</option>
-      <option value="/internal">Internal</option>
-      <option value="/notImplemented">Not Implemented</option>
-      <option value="/notFound">Not Found</option>
-    </select>
-    <select id="type">
-      <option value="application/json">JSON</option>
-      <option value="text/xml">XML</option>
-    </select>
-    <button id="send">Send</button>
-  </section>
-  <section id="content">
-  </section> -->
-
   <section id="header">
       <h1>Super Smash DB</h1>
   </section>
   <section id="charSelect">
     <h3>Choose Your Character!</h3>
+    Method:
+    <select id="method">
+      <option value="GET">GET</option>
+      <option value="HEAD">HEAD</option>
+    </select>
     <div id="charContainer">
         <!--Character select images go here-->
-        <a value="/getCharacter?char=luigi">Luigi</a>
-        <a value="/getCharacter?char=mario">Mario</a>
-        <a value="/getCharacter?char=donkey_kong">Donkey Kong</a>
-        <a value="/getCharacter?char=link">Link</a>
-        <a value="/getCharacter?char=samus">Samus</a>
-        <a value="/getCharacter?char=captain_falcon">Captain Falcon</a>
+        <a value="/getCharacter?char=luigi" href="#">Luigi</a>
+        <a value="/getCharacter?char=mario" href="#">Mario</a>
+        <a value="/getCharacter?char=donkey_kong" href="#">Donkey Kong</a>
+        <a value="/getCharacter?char=link" href="#">Link</a>
+        <a value="/getCharacter?char=samus" href="#">Samus</a>
+        <a value="/getCharacter?char=captain_falcon" href="#">Captain Falcon</a>
         <br>
-        <a value="/getCharacter?char=ness">Ness</a>
-        <a value="/getCharacter?char=yoshi">Yoshi</a>
-        <a value="/getCharacter?char=kirby">Kirby</a>
-        <a value="/getCharacter?char=fox">Fox</a>
-        <a value="/getCharacter?char=pikachu">Pikachu</a>
-        <a value="/getCharacter?char=jigglypuff">Jigglypuff</a>
+        <a value="/getCharacter?char=ness" href="#">Ness</a>
+        <a value="/getCharacter?char=yoshi" href="#">Yoshi</a>
+        <a value="/getCharacter?char=kirby" href="#">Kirby</a>
+        <a value="/getCharacter?char=fox" href="#">Fox</a>
+        <a value="/getCharacter?char=pikachu" href="#">Pikachu</a>
+        <a value="/getCharacter?char=jigglypuff" href="#">Jigglypuff</a>
     </div>
   </section>
   <section id="content">

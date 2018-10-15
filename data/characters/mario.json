@@ -1,7 +1,8 @@
 {
+    "id": "mario",
     "name": "Mario",
     "universe": "Mario",
-    "imageDir": "./images/",
+    "image": "./getImage?char=mario",
     "tier": "B",
     "rank": "7",
     "desc": "Although best known as the mustachioed plumber who battles the Turtle Tribe with his distinct jumping action, this internationally famous hero has also acted as a referee, a driver, and even a doctor! He's been linked to Princess Peach of the Mushroom Kingdom for years, but to this day their true relationship remains a mystery."
