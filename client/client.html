@@ -35,24 +35,30 @@
         return;
       }
 
+      // Character name
       h3.innerHTML = responseJSON.name;
       content.appendChild(h3);
 
-      p.innerHTML = responseJSON.universe;
+      // Character's universe of origin
+      p.innerHTML = "From the " + responseJSON.universe + " games";
       content.appendChild(p);
 
+      // Character's image
       const img = document.createElement("img");
       img.setAttribute("src", responseJSON.image);
       content.appendChild(img);
 
+      // Character's tier
       p = document.createElement("p");
-      p.innerHTML = "<b>" + responseJSON.tier + "</b>";
+      p.innerHTML = "<b>" + responseJSON.tier + " Tier</b>";
       content.appendChild(p);
 
+      // Character's ranking
       p = document.createElement("p");
-      p.innerHTML = responseJSON.rank;
+      p.innerHTML = "(Rank " + responseJSON.rank + ")";
       content.appendChild(p);
 
+      // Character's in-game description
       p = document.createElement("p");
       p.innerHTML = responseJSON.desc;
       content.appendChild(p);
@@ -158,19 +164,19 @@
     </select>
     <div id="charContainer">
         <!--Character select images go here-->
-        <a value="/getCharacter?char=luigi" href="#">Luigi</a>
-        <a value="/getCharacter?char=mario" href="#">Mario</a>
-        <a value="/getCharacter?char=donkey_kong" href="#">Donkey Kong</a>
-        <a value="/getCharacter?char=link" href="#">Link</a>
-        <a value="/getCharacter?char=samus" href="#">Samus</a>
-        <a value="/getCharacter?char=captain_falcon" href="#">Captain Falcon</a>
+        <a href="#"><img value="/getCharacter?char=luigi" src="/getCSSImage?char=luigi"/></a>
+        <a href="#"><img value="/getCharacter?char=mario" src="/getCSSImage?char=mario"/></a>
+        <a href="#"><img value="/getCharacter?char=donkey_kong" src="/getCSSImage?char=donkey_kong"/></a>
+        <a href="#"><img value="/getCharacter?char=link" src="/getCSSImage?char=link"/></a>
+        <a href="#"><img value="/getCharacter?char=samus" src="/getCSSImage?char=samus"/></a>
+        <a href="#"><img value="/getCharacter?char=captain_falcon" src="/getCSSImage?char=captain_falcon"/></a>
         <br>
-        <a value="/getCharacter?char=ness" href="#">Ness</a>
-        <a value="/getCharacter?char=yoshi" href="#">Yoshi</a>
-        <a value="/getCharacter?char=kirby" href="#">Kirby</a>
-        <a value="/getCharacter?char=fox" href="#">Fox</a>
-        <a value="/getCharacter?char=pikachu" href="#">Pikachu</a>
-        <a value="/getCharacter?char=jigglypuff" href="#">Jigglypuff</a>
+        <a href="#"><img value="/getCharacter?char=ness" src="/getCSSImage?char=ness"/></a>
+        <a href="#"><img value="/getCharacter?char=yoshi" src="/getCSSImage?char=yoshi"/></a>
+        <a href="#"><img value="/getCharacter?char=kirby" src="/getCSSImage?char=kirby"/></a>
+        <a href="#"><img value="/getCharacter?char=fox" src="/getCSSImage?char=fox"/></a>
+        <a href="#"><img value="/getCharacter?char=pikachu" src="/getCSSImage?char=pikachu"/></a>
+        <a href="#"><img value="/getCharacter?char=jigglypuff" src="/getCSSImage?char=jigglypuff"/></a>
     </div>
   </section>
   <section id="content">

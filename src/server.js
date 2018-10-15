@@ -14,6 +14,7 @@ const urlStruct = {
   '/style.css': htmlHandler.getCSS,
   '/getCharacter': jsonHandler.getCharacter,
   '/getImage': mediaHandler.getImage,
+  '/getCSSImage': mediaHandler.getCSSImage,
   '/postComment': jsonHandler.postComment,
 
   // Error handling / Special cases

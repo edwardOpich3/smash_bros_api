@@ -3,6 +3,7 @@ html, body
   height: 100%;
   width: 100%;
   margin: 0;
+  padding-bottom: 100px;
   padding: 0;
   background-color: #222222;
 }
@@ -28,12 +29,17 @@ html, body
   background-color: #BB0000;
 }
 
+#charContainer a img
+{
+  width: 10%;
+}
+
 #content
 {
-  margin-top: 100px;
   width: 75%;
+  margin: 0 auto 100px auto;
+  padding: 32px;
   font-size: 2em;
   text-align: center;
   background-color: #444444;
-  margin: 0 auto;
 }

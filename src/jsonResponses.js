@@ -1,9 +1,9 @@
 const fs = require('fs');
 
-const characters = [];  // Array containing each character's info.
-const comments = {};    // JSON object containing comments under each character by each user.
+const characters = []; // Array containing each character's info.
+const comments = {}; // JSON object containing comments under each character by each user.
 
-// Scope because charNames doesn't need to exist after characters and comments have been initialized.
+// Scope because charNames doesn't need to exist after this initialization.
 {
   const charNames = ['luigi', 'mario', 'donkey_kong', 'link', 'samus', 'captain_falcon', 'ness', 'yoshi', 'kirby', 'fox', 'pikachu', 'jigglypuff'];
   for (let i = 0; i < charNames.length; i++) {
